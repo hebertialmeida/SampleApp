@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TabBarController.swift
 //  AppStore
 //
 //  Created by Heberti Almeida on 2018-05-29.
@@ -8,18 +8,26 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+enum TabBarItem {
+    case feed
+    case settings
+
+    static func defaultItems() -> [TabBarItem] {
+        return [.feed, .settings]
+    }
+}
+
+final class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        let today = TodayViewController()
+        viewControllers = [today]
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
-
