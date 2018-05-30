@@ -26,4 +26,15 @@ struct Api {
             completion(response)
         }
     }
+
+    static func getCuratedCollections(page: Int, perPage: Int, completion: @escaping (Result<[Collection]>) -> Void) {
+        let params: Parameters = [
+            "per_page": perPage,
+            "page": page
+        ]
+
+        Route.collectionsCurated(params: params).request([Collection].self) { response in
+            completion(response)
+        }
+    }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ProfileImage: Codable {
+public struct ProfileImage: Codable, Equatable {
 
     // MARK: Instance Variables
 

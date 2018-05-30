@@ -1,0 +1,10 @@
+{
+  "title": "CollectionLinks",
+  "type": "object",
+  "properties": {
+    "photos": {"type": "string", "format": "uri"},
+    "html": {"type": "string", "format": "uri"},
+    "download": {"type": "string", "format": "uri"}
+  },
+  "required": ["photos", "html", "download"]
+}

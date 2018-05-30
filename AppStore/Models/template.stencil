@@ -11,7 +11,7 @@ import Foundation
 {% if spec.description %}
 /// {{ spec.description }}
 {% endif %}
-public struct {{ spec.title }}: Codable {
+public struct {{ spec.title }}: Codable, Equatable {
 
     // MARK: Instance Variables
 

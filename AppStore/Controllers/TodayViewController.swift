@@ -10,8 +10,14 @@ import UIKit
 
 final class TodayViewController: UIViewController {
 
+    struct Section {
+        let date: Date
+        let collections: [Collection]
+    }
+
     var collectionView: UICollectionView!
     var topHeaderView: UIVisualEffectView!
+    var dataSource = [Section]()
 
     struct Identifier {
         static let cell = "todayCell"
@@ -57,10 +63,16 @@ final class TodayViewController: UIViewController {
         title = NSLocalizedString("Today", comment: "")
         tabBarItem.image = UIImage(named: "icon-tabbar-today")
 
-        Api.getPhotos(page: 1, perPage: 30, orderBy: .latest) { response in
+        fetchData(page: 1)
+    }
+
+    func fetchData(page: Int) {
+        Api.getCuratedCollections(page: page, perPage: 5) { response in
             switch response {
-            case let .success(photos):
-                debugPrint(photos)
+            case let .success(collections):
+                guard let first = collections.first else { return }
+                let section = Section(date: first.publishedAt, collections: collections)
+                self.dataSource.append(section)
             case let .failure(error):
                 debugPrint(error)
             }
@@ -77,11 +89,11 @@ final class TodayViewController: UIViewController {
 
 extension TodayViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 6
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return dataSource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

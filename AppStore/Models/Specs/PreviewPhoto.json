@@ -1,0 +1,10 @@
+{
+  "title": "PreviewPhoto",
+  "type": "object",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "integer"},
+    "urls": {"$ref": "PhotoUrls.json"}
+  },
+  "required": ["id", "urls"]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Collection",
+  "type": "object",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "integer"},
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "published_at": {"type": "string", "format": "date"},
+    "updated_at": {"type": "string", "format": "date"},
+    "curated": {"type": "boolean"},
+    "featured": {"type": "boolean"},
+    "total_photos": {"type": "integer"},
+    "cover_photo": {"$ref": "Photo.json"},
+    "preview_photos": {
+      "type": "array",
+      "items": {"$ref": "PreviewPhoto.json"}
+    },
+    "links": {"$ref": "CollectionLinks.json"},
+    "user": {"$ref": "User.json"},
+  },
+  "required": ["id", "title", "published_at", "updated_at", "curated", "featured", "total_photos", "cover_photo", "preview_photos", "links", "user"]
+}

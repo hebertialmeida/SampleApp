@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Photo: Codable {
+public struct Photo: Codable, Equatable {
 
     // MARK: Instance Variables
 
@@ -22,9 +22,9 @@ public struct Photo: Codable {
     public let height: Int
     public let id: String
     public let createdAt: Date
-    public let urls: PhotoUrl
+    public let urls: PhotoUrls
     public let likedByUser: Bool
-    public let links: PhotoLink
+    public let links: PhotoLinks
 
     private enum CodingKeys: String, CodingKey {
         case user

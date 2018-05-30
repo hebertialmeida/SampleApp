@@ -9,7 +9,7 @@
 import Foundation
 
 /// Definition of a User
-public struct User: Codable {
+public struct User: Codable, Equatable {
 
     // MARK: Instance Variables
 
