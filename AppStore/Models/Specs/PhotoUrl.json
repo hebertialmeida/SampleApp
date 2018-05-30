@@ -1,0 +1,12 @@
+{
+  "title": "PhotoUrl",
+  "type": "object",
+  "properties": {
+    "raw": {"type": "string", "format": "uri"},
+    "full": {"type": "string", "format": "uri"},
+    "regular": {"type": "string", "format": "uri"},
+    "small": {"type": "string", "format": "uri"},
+    "thumb": {"type": "string", "format": "uri"}
+  },
+  "required": ["raw", "full", "regular", "small", "thumb"]
+}

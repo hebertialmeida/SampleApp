@@ -1,0 +1,16 @@
+{
+  "title": "User",
+  "type": "object",
+  "description": "Definition of a User",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "string"},
+    "username": {"type": "string"},
+    "name": {"type": "string"},
+    "location": {"type": "string"},
+    "bio": {"type": "string"},
+    "profile_image": {"$ref": "ProfileImage.json"},
+    
+  },
+  "required": ["id", "username", "name", "profile_image"]
+}

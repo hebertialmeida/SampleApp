@@ -1,0 +1,21 @@
+{
+  "title": "Photo",
+  "type": "object",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date"},
+    "updated_at": {"type": "string", "format": "date"},
+    "width": {"type": "integer"},
+    "height": {"type": "integer"},
+    "color": {"type": "string"},
+    "description": {"type": "string"},
+    "urls": {"$ref": "PhotoUrl.json"},
+    "links": {"$ref": "PhotoLink.json"},
+    "sponsored": {"type": "boolean"},
+    "likes": {"type": "integer"},
+    "liked_by_user": {"type": "boolean"},
+    "user": {"$ref": "User.json"},
+  },
+  "required": ["id", "created_at", "updated_at", "width", "height", "color", "urls", "links", "sponsored", "likes", "liked_by_user", "user"]
+}

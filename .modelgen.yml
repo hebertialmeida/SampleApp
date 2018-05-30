@@ -1,0 +1,4 @@
+---
+spec: ./AppStore/Models/Specs/
+output: ./AppStore/Models/
+template: ./AppStore/Models/template.stencil

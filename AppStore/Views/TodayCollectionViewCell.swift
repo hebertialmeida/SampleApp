@@ -9,6 +9,7 @@
 import UIKit
 
 final class TodayCollectionViewCell: UICollectionViewCell {
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 

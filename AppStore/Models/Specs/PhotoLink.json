@@ -1,0 +1,10 @@
+{
+  "title": "PhotoLink",
+  "type": "object",
+  "properties": {
+    "html": {"type": "string", "format": "uri"},
+    "download": {"type": "string", "format": "uri"},
+    "download_location": {"type": "string", "format": "uri"}
+  },
+  "required": ["self", "html", "download", "download_location"]
+}

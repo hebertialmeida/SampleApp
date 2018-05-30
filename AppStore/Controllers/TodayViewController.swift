@@ -56,6 +56,15 @@ final class TodayViewController: UIViewController {
 
         title = NSLocalizedString("Today", comment: "")
         tabBarItem.image = UIImage(named: "icon-tabbar-today")
+
+        Api.getPhotos(page: 1, perPage: 30, orderBy: .latest) { response in
+            switch response {
+            case let .success(photos):
+                debugPrint(photos)
+            case let .failure(error):
+                debugPrint(error)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
