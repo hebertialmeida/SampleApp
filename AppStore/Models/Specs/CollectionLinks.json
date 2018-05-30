@@ -4,7 +4,8 @@
   "properties": {
     "photos": {"type": "string", "format": "uri"},
     "html": {"type": "string", "format": "uri"},
-    "download": {"type": "string", "format": "uri"}
+    "download": {"type": "string", "format": "uri"},
+    "related": {"type": "string", "format": "uri"}
   },
-  "required": ["photos", "html", "download"]
+  "required": ["photos", "html"]
 }

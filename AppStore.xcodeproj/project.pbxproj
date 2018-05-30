@@ -13,6 +13,11 @@
 		1A0219AB20BF242500B23FE4 /* PhotoLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0219AA20BF242500B23FE4 /* PhotoLinks.swift */; };
 		1A0219AD20BF242D00B23FE4 /* CollectionLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0219AC20BF242D00B23FE4 /* CollectionLinks.swift */; };
 		1A0219AF20BF248000B23FE4 /* PhotoUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0219AE20BF248000B23FE4 /* PhotoUrls.swift */; };
+		1A0219B320BF2A9700B23FE4 /* HexColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0219B220BF2A9700B23FE4 /* HexColors.swift */; };
+		1A0219B920BF2D1A00B23FE4 /* PINRemoteImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0219B720BF2D1A00B23FE4 /* PINRemoteImage.framework */; };
+		1A0219BA20BF2D1A00B23FE4 /* PINRemoteImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0219B720BF2D1A00B23FE4 /* PINRemoteImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1A0219BB20BF2D1A00B23FE4 /* PINCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0219B820BF2D1A00B23FE4 /* PINCache.framework */; };
+		1A0219BC20BF2D1A00B23FE4 /* PINCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0219B820BF2D1A00B23FE4 /* PINCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A75493A20BDDEDA00D9D568 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75493920BDDEDA00D9D568 /* AppDelegate.swift */; };
 		1A75493C20BDDEDA00D9D568 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */; };
 		1A75494120BDDEDC00D9D568 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A75494020BDDEDC00D9D568 /* Assets.xcassets */; };
@@ -28,6 +33,7 @@
 		1AB2DEDA20BE66DA0033119F /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB2DED520BE66DA0033119F /* ProfileImage.swift */; };
 		1AB2DEDD20BE6C990033119F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB2DEC420BE517C0033119F /* Alamofire.framework */; };
 		1AB2DEDE20BE6C990033119F /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB2DEC420BE517C0033119F /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1AD8AF2B20BF51B700655B05 /* Color+Contrast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD8AF2A20BF51B700655B05 /* Color+Contrast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,7 +43,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1A0219BA20BF2D1A00B23FE4 /* PINRemoteImage.framework in Embed Frameworks */,
 				1AB2DEDE20BE6C990033119F /* Alamofire.framework in Embed Frameworks */,
+				1A0219BC20BF2D1A00B23FE4 /* PINCache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +59,9 @@
 		1A0219AA20BF242500B23FE4 /* PhotoLinks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLinks.swift; sourceTree = "<group>"; };
 		1A0219AC20BF242D00B23FE4 /* CollectionLinks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLinks.swift; sourceTree = "<group>"; };
 		1A0219AE20BF248000B23FE4 /* PhotoUrls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoUrls.swift; sourceTree = "<group>"; };
+		1A0219B220BF2A9700B23FE4 /* HexColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexColors.swift; sourceTree = "<group>"; };
+		1A0219B720BF2D1A00B23FE4 /* PINRemoteImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINRemoteImage.framework; path = Carthage/Build/iOS/PINRemoteImage.framework; sourceTree = "<group>"; };
+		1A0219B820BF2D1A00B23FE4 /* PINCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINCache.framework; path = Carthage/Build/iOS/PINCache.framework; sourceTree = "<group>"; };
 		1A75493620BDDED900D9D568 /* AppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A75493920BDDEDA00D9D568 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +78,7 @@
 		1AB2DED220BE66DA0033119F /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		1AB2DED420BE66DA0033119F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1AB2DED520BE66DA0033119F /* ProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
+		1AD8AF2A20BF51B700655B05 /* Color+Contrast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Contrast.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,13 +86,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A0219B920BF2D1A00B23FE4 /* PINRemoteImage.framework in Frameworks */,
 				1AB2DEDD20BE6C990033119F /* Alamofire.framework in Frameworks */,
+				1A0219BB20BF2D1A00B23FE4 /* PINCache.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0219B120BF2A9700B23FE4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1A0219A420BF16C800B23FE4 /* URLRequestConvertible+Request.swift */,
+				1A0219B220BF2A9700B23FE4 /* HexColors.swift */,
+				1AD8AF2A20BF51B700655B05 /* Color+Contrast.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		1A75492D20BDDED900D9D568 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +142,7 @@
 			children = (
 				1AB2DEC120BE3A560033119F /* TextStyle.swift */,
 				1AB2DECA20BE52DC0033119F /* Api */,
+				1A0219B120BF2A9700B23FE4 /* Extensions */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -125,6 +150,8 @@
 		1AB2DEC320BE517B0033119F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1A0219B820BF2D1A00B23FE4 /* PINCache.framework */,
+				1A0219B720BF2D1A00B23FE4 /* PINRemoteImage.framework */,
 				1AB2DEC420BE517C0033119F /* Alamofire.framework */,
 			);
 			name = Frameworks;
@@ -153,7 +180,6 @@
 			children = (
 				1AB2DECB20BE55940033119F /* Api.swift */,
 				1AB2DEC820BE52D70033119F /* Route.swift */,
-				1A0219A420BF16C800B23FE4 /* URLRequestConvertible+Request.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -257,6 +283,8 @@
 				1A0219AF20BF248000B23FE4 /* PhotoUrls.swift in Sources */,
 				1A0219A920BF1E2D00B23FE4 /* PreviewPhoto.swift in Sources */,
 				1AB2DED920BE66DA0033119F /* User.swift in Sources */,
+				1A0219B320BF2A9700B23FE4 /* HexColors.swift in Sources */,
+				1AD8AF2B20BF51B700655B05 /* Color+Contrast.swift in Sources */,
 				1AB2DEC920BE52D70033119F /* Route.swift in Sources */,
 				1A0219AD20BF242D00B23FE4 /* CollectionLinks.swift in Sources */,
 				1AB2DECC20BE55940033119F /* Api.swift in Sources */,

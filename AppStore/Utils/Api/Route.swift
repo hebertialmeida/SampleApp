@@ -31,13 +31,15 @@ extension Routeable {
 }
 
 enum Route: Routeable {
-    case photos(params: Parameters)
-    case collectionsCurated(params: Parameters)
+    case photos(Parameters)
+    case collectionsCurated(Parameters)
+    case collectionsFeatured(Parameters)
 
     var method: HTTPMethod {
         switch self {
         case .photos,
-             .collectionsCurated:
+             .collectionsCurated,
+             .collectionsFeatured:
             return .get
         }
     }
@@ -48,13 +50,16 @@ enum Route: Routeable {
             return "/photos"
         case .collectionsCurated:
             return "/collections/curated"
+        case .collectionsFeatured:
+            return "/collections/featured"
         }
     }
 
     func asURLRequest() throws -> URLRequest {
         switch self {
         case let .photos(params),
-             let .collectionsCurated(params):
+             let .collectionsCurated(params),
+             let .collectionsFeatured(params):
             return try URLEncoding.default.encode(mutableURLRequest, with: params)
         }
     }

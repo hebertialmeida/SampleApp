@@ -30,7 +30,8 @@ final class TodayViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height)
-        layout.estimatedItemSize = CGSize(width: view.frame.width-40, height: 412)
+//        layout.estimatedItemSize = CGSize(width: view.frame.width-40, height: 412)
+        layout.itemSize = CGSize(width: view.frame.width-40, height: 412)
         layout.sectionInsetReference = .fromSafeArea
         layout.minimumLineSpacing = 30
 
@@ -67,12 +68,15 @@ final class TodayViewController: UIViewController {
     }
 
     func fetchData(page: Int) {
-        Api.getCuratedCollections(page: page, perPage: 5) { response in
+        Api.getFeaturedCollections(page: page, perPage: 400) { response in
+//        Api.getCuratedCollections(page: page, perPage: 400) { response in
             switch response {
             case let .success(collections):
                 guard let first = collections.first else { return }
                 let section = Section(date: first.publishedAt, collections: collections)
                 self.dataSource.append(section)
+                self.collectionView.reloadData()
+
             case let .failure(error):
                 debugPrint(error)
             }
@@ -89,25 +93,37 @@ final class TodayViewController: UIViewController {
 
 extension TodayViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource.count
     }
 
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource[section].collections.count
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.cell, for: indexPath)
-
-        cell.backgroundColor = .blue
-
-        // Configure the cell
-        if let c = cell as? TodayCollectionViewCell {
-            c.contentView.frame = c.bounds
-            c.contentView.autoresizingMask = [.flexibleWidth]
-//            configureCell(c, indexPath: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.cell, for: indexPath) as? TodayCollectionViewCell else {
+            return UICollectionViewCell()
         }
 
+        let collection = dataSource[indexPath.section].collections[indexPath.row]
+        let photo = collection.coverPhoto
+        let photoColor = UIColor(photo.color)
+        var textColor: UIColor {
+            guard let contrast = photoColor?.contrastRatio(with: .black), contrast > 16 else {
+                return .white
+            }
+            return .black
+        }
+
+        cell.backgroundColor = UIColor(photo.color)
+        cell.autoresizingMask = [.flexibleHeight]
+        cell.setContent(
+            imageUrl: photo.urls.regular,
+            label: "Curated by \(collection.user.name)".uppercased(),
+            title: collection.title,
+            description: collection.description ?? "",
+            color: textColor
+        )
         return cell
     }
 

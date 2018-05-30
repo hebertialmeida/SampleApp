@@ -22,7 +22,7 @@ struct Api {
             "order_by": orderBy
             ]
 
-        Route.photos(params: params).request([Photo].self) { response in
+        Route.photos(params).request(as: [Photo].self) { response in
             completion(response)
         }
     }
@@ -33,7 +33,18 @@ struct Api {
             "page": page
         ]
 
-        Route.collectionsCurated(params: params).request([Collection].self) { response in
+        Route.collectionsCurated(params).request(as: [Collection].self) { response in
+            completion(response)
+        }
+    }
+
+    static func getFeaturedCollections(page: Int, perPage: Int, completion: @escaping (Result<[Collection]>) -> Void) {
+        let params: Parameters = [
+            "per_page": perPage,
+            "page": page
+        ]
+
+        Route.collectionsFeatured(params).request(as: [Collection].self) { response in
             completion(response)
         }
     }

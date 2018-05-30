@@ -10,7 +10,7 @@ import Alamofire
 
 extension URLRequestConvertible {
 
-    func request<T>(_ type: T.Type, completion: @escaping (Result<T>) -> Void) -> Void where T: Decodable {
+    func request<T>(as type: T.Type, completion: @escaping (Result<T>) -> Void) -> Void where T: Decodable {
         Alamofire.request(self).responseData(completionHandler: { response in
             switch response.result {
             case let .success(data):

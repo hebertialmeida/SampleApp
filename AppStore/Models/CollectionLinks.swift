@@ -12,22 +12,25 @@ public struct CollectionLinks: Codable, Equatable {
 
     // MARK: Instance Variables
 
-    public let download: URL
-    public let photos: URL
     public let html: URL
+    public let photos: URL
+    public let download: URL?
+    public let related: URL?
 
     private enum CodingKeys: String, CodingKey {
-        case download
-        case photos
         case html
+        case photos
+        case download
+        case related
     }
 }
 
 // MARK: - Equatable
 
 public func == (lhs: CollectionLinks, rhs: CollectionLinks) -> Bool {
-    guard lhs.download == rhs.download else { return false }
-    guard lhs.photos == rhs.photos else { return false }
     guard lhs.html == rhs.html else { return false }
+    guard lhs.photos == rhs.photos else { return false }
+    guard lhs.download == rhs.download else { return false }
+    guard lhs.related == rhs.related else { return false }
     return true
 }
