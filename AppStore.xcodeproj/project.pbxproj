@@ -34,6 +34,8 @@
 		1AB2DEDD20BE6C990033119F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB2DEC420BE517C0033119F /* Alamofire.framework */; };
 		1AB2DEDE20BE6C990033119F /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB2DEC420BE517C0033119F /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1AD8AF2B20BF51B700655B05 /* Color+Contrast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD8AF2A20BF51B700655B05 /* Color+Contrast.swift */; };
+		1AD8AF2D20C0624700655B05 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD8AF2C20C0624700655B05 /* SnapKit.framework */; };
+		1AD8AF2E20C0624700655B05 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD8AF2C20C0624700655B05 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +48,7 @@
 				1A0219BA20BF2D1A00B23FE4 /* PINRemoteImage.framework in Embed Frameworks */,
 				1AB2DEDE20BE6C990033119F /* Alamofire.framework in Embed Frameworks */,
 				1A0219BC20BF2D1A00B23FE4 /* PINCache.framework in Embed Frameworks */,
+				1AD8AF2E20C0624700655B05 /* SnapKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +82,7 @@
 		1AB2DED420BE66DA0033119F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1AB2DED520BE66DA0033119F /* ProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		1AD8AF2A20BF51B700655B05 /* Color+Contrast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Contrast.swift"; sourceTree = "<group>"; };
+		1AD8AF2C20C0624700655B05 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,7 @@
 				1A0219B920BF2D1A00B23FE4 /* PINRemoteImage.framework in Frameworks */,
 				1AB2DEDD20BE6C990033119F /* Alamofire.framework in Frameworks */,
 				1A0219BB20BF2D1A00B23FE4 /* PINCache.framework in Frameworks */,
+				1AD8AF2D20C0624700655B05 /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +155,7 @@
 		1AB2DEC320BE517B0033119F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1AD8AF2C20C0624700655B05 /* SnapKit.framework */,
 				1A0219B820BF2D1A00B23FE4 /* PINCache.framework */,
 				1A0219B720BF2D1A00B23FE4 /* PINRemoteImage.framework */,
 				1AB2DEC420BE517C0033119F /* Alamofire.framework */,

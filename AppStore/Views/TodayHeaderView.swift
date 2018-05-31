@@ -7,35 +7,32 @@
 //
 
 import UIKit
+import SnapKit
 
 final class TodayHeaderView: UICollectionReusableView {
 
-    lazy var dateLabel = UILabel(frame: CGRect.zero)
-    lazy var dayLabel = UILabel(frame: CGRect.zero)
+    let dateLabel = UILabel()
+    let dayLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         dateLabel.numberOfLines = 1
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(dateLabel)
-
-        dayLabel.numberOfLines = 1
-        dayLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(dayLabel)
 
-        // Configure layout contraints
-        var constraints = [NSLayoutConstraint]()
-        let views: [String : Any] = [
-            "dateLabel": dateLabel,
-            "dayLabel": dayLabel
-        ]
+        dayLabel.numberOfLines = 1
+        addSubview(dateLabel)
 
-        NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[dateLabel]-3-[dayLabel]-0-|", options: [], metrics: nil, views: views).forEach { constraints.append($0) }
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[dateLabel]-20-|", options: [], metrics: nil, views: views).forEach { constraints.append($0) }
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[dayLabel]-20-|", options: [], metrics: nil, views: views).forEach { constraints.append($0) }
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.right.equalToSuperview().inset(20)
+        }
 
-        addConstraints(constraints)
+        dayLabel.snp.makeConstraints { make in
+            make.top.equalTo(dateLabel.snp.bottom).offset(3)
+            make.left.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -44,9 +41,6 @@ final class TodayHeaderView: UICollectionReusableView {
 
     func setContent(date: String, title: String) {
         dateLabel.attributedText = TextStyle.headerSmall(date)
-        dateLabel.sizeToFit()
-
         dayLabel.attributedText = TextStyle.headerBig(title)
-        dayLabel.sizeToFit()
     }
 }

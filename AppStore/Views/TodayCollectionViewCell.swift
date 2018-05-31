@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import SnapKit
 import PINRemoteImage
 
 final class TodayCollectionViewCell: UICollectionViewCell {
 
-    lazy var smallLabel = UILabel(frame: .zero)
-    lazy var titleLabel = UILabel(frame: .zero)
-    lazy var descriptionLabel = UILabel(frame: .zero)
+    let smallLabel = UILabel()
+    let titleLabel = UILabel()
+    let descriptionLabel = UILabel()
     lazy var imageView = UIImageView(frame: bounds)
 
     override init(frame: CGRect) {
@@ -30,55 +31,49 @@ final class TodayCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = corner-1
-        addSubview(imageView)
+        contentView.addSubview(imageView)
 
         // Labels
         smallLabel.numberOfLines = 1
-        smallLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(smallLabel)
+        contentView.addSubview(smallLabel)
 
         titleLabel.numberOfLines = 0
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
 
         descriptionLabel.numberOfLines = 3
         descriptionLabel.lineBreakMode = .byTruncatingTail
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(descriptionLabel)
+        contentView.addSubview(descriptionLabel)
 
-        // Configure layout contraints
-        var constraints = [NSLayoutConstraint]()
-        let views: [String : Any] = [
-            "smallLabel": smallLabel,
-            "titleLabel": titleLabel,
-            "descriptionLabel": descriptionLabel
-        ]
+        imageView.snp.makeConstraints { make in
+            make.size.equalTo(contentView)
+        }
 
-        NSLayoutConstraint.constraints(withVisualFormat: "V:|-18-[smallLabel]-4-[titleLabel]", metrics: nil, views: views).forEach { constraints.append($0) }
-        NSLayoutConstraint.constraints(withVisualFormat: "V:[descriptionLabel]-18-|", metrics: nil, views: views).forEach { constraints.append($0) }
+        smallLabel.snp.makeConstraints { make in
+            make.top.equalTo(18)
+            make.left.right.equalToSuperview().inset(20)
+        }
 
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[smallLabel]-20-|", metrics: nil, views: views).forEach { constraints.append($0) }
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[titleLabel]-20-|", metrics: nil, views: views).forEach { constraints.append($0) }
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[descriptionLabel]-20-|", metrics: nil, views: views).forEach { constraints.append($0) }
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(smallLabel.snp.bottom).offset(4)
+            make.left.right.equalToSuperview().inset(20)
+        }
 
-        addConstraints(constraints)
+        descriptionLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(18)
+            make.left.right.equalToSuperview().inset(20)
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     func setContent(imageUrl: URL?, label: String, title: String, description: String, color: UIColor) {
         imageView.pin_setImage(from: imageUrl)
 
         smallLabel.attributedText = TextStyle.cardSmall(label, color: color)
-        smallLabel.sizeToFit()
-
         titleLabel.attributedText = TextStyle.cardTitle(title, color: color)
-        titleLabel.sizeToFit()
-
         descriptionLabel.attributedText = TextStyle.cardDescription(description, color: color)
-        descriptionLabel.sizeToFit()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     override func prepareForReuse() {

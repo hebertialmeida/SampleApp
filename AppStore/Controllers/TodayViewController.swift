@@ -7,17 +7,18 @@
 //
 
 import UIKit
+import SnapKit
 
 final class TodayViewController: UIViewController {
+
+    var collectionView: UICollectionView!
+    var topHeaderView: UIVisualEffectView!
+    var dataSource = [Section]()
 
     struct Section {
         let date: Date
         let collections: [Collection]
     }
-
-    var collectionView: UICollectionView!
-    var topHeaderView: UIVisualEffectView!
-    var dataSource = [Section]()
 
     struct Identifier {
         static let cell = "todayCell"
@@ -29,21 +30,24 @@ final class TodayViewController: UIViewController {
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height)
-//        layout.estimatedItemSize = CGSize(width: view.frame.width-40, height: 412)
         layout.itemSize = CGSize(width: view.frame.width-40, height: 412)
-        layout.sectionInsetReference = .fromSafeArea
         layout.minimumLineSpacing = 30
 
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: Identifier.cell)
         collectionView.register(TodayHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Identifier.header)
         view.addSubview(collectionView)
+
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
+            make.bottom.equalTo(view.snp.bottom)
+        }
 
         // Top Header
         let navBarHeight = UIApplication.shared.statusBarFrame.height
@@ -68,14 +72,16 @@ final class TodayViewController: UIViewController {
     }
 
     func fetchData(page: Int) {
-        Api.getFeaturedCollections(page: page, perPage: 400) { response in
-//        Api.getCuratedCollections(page: page, perPage: 400) { response in
+        Api.getFeaturedCollections(page: page, perPage: 400) { [weak self] response in
+//        Api.getCuratedCollections(page: page, perPage: 400) { [weak self] response in
+            guard let strongSelf = self else { return }
+
             switch response {
             case let .success(collections):
                 guard let first = collections.first else { return }
                 let section = Section(date: first.publishedAt, collections: collections)
-                self.dataSource.append(section)
-                self.collectionView.reloadData()
+                strongSelf.dataSource.append(section)
+                strongSelf.collectionView.reloadData()
 
             case let .failure(error):
                 debugPrint(error)
