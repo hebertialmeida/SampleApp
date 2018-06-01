@@ -1,0 +1,14 @@
+{
+  "title": "CollectionSectionModel",
+  "type": "object",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "string"},
+    "date": {"type": "string", "format": "date"},
+    "collections": {
+      "type": "array",
+      "items": {"$ref": "Collection.json"}
+    }
+  },
+  "required": ["id", "date", "collections"]
+}

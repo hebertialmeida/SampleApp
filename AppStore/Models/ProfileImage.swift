@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ProfileImage: Codable, Equatable {
+public struct ProfileImage: Codable {
 
     // MARK: Instance Variables
 
@@ -23,11 +23,17 @@ public struct ProfileImage: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: ProfileImage, rhs: ProfileImage) -> Bool {
-    guard lhs.medium == rhs.medium else { return false }
-    guard lhs.small == rhs.small else { return false }
-    guard lhs.large == rhs.large else { return false }
-    return true
+extension ProfileImage: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return ""
+    }
+
+    static public func == (lhs: ProfileImage, rhs: ProfileImage) -> Bool {
+        guard lhs.medium == rhs.medium else { return false }
+        guard lhs.small == rhs.small else { return false }
+        guard lhs.large == rhs.large else { return false }
+        return true
+    }
 }

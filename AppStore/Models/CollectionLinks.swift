@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CollectionLinks: Codable, Equatable {
+public struct CollectionLinks: Codable {
 
     // MARK: Instance Variables
 
@@ -25,12 +25,18 @@ public struct CollectionLinks: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: CollectionLinks, rhs: CollectionLinks) -> Bool {
-    guard lhs.html == rhs.html else { return false }
-    guard lhs.photos == rhs.photos else { return false }
-    guard lhs.download == rhs.download else { return false }
-    guard lhs.related == rhs.related else { return false }
-    return true
+extension CollectionLinks: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return ""
+    }
+
+    static public func == (lhs: CollectionLinks, rhs: CollectionLinks) -> Bool {
+        guard lhs.html == rhs.html else { return false }
+        guard lhs.photos == rhs.photos else { return false }
+        guard lhs.download == rhs.download else { return false }
+        guard lhs.related == rhs.related else { return false }
+        return true
+    }
 }

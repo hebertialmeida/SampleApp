@@ -38,4 +38,21 @@ extension UIColor {
 
         return 0.2126 * adjust(colorComponent: ciColor.red) + 0.7152 * adjust(colorComponent: ciColor.green) + 0.0722 * adjust(colorComponent: ciColor.blue)
     }
+
+    var complementary: UIColor {
+        let ciColor = CIColor(color: self)
+        let compRed: CGFloat = 1.0 - ciColor.red
+        let compGreen: CGFloat = 1.0 - ciColor.green
+        let compBlue: CGFloat = 1.0 - ciColor.blue
+
+        return UIColor(red: compRed, green: compGreen, blue: compBlue, alpha: 1.0)
+    }
+
+    var inverted: UIColor {
+        var r:CGFloat = 0.0; var g:CGFloat = 0.0; var b:CGFloat = 0.0; var a:CGFloat = 0.0;
+        if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return UIColor(red: 1.0-r, green: 1.0 - g, blue: 1.0 - b, alpha: a)
+        }
+        return .black // Return a default colour
+    }
 }

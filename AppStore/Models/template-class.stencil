@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import IGListKit
 
 {% if spec.description %}
 /// {{ spec.description }}
 {% endif %}
-public struct {{ spec.title }}: Codable {
+final class {{ spec.title }}: NSObject, Codable, Equatable {
 
     // MARK: Instance Variables
 
@@ -31,24 +32,37 @@ public struct {{ spec.title }}: Codable {
     }
 }
 
-// MARK: - Diffable
+// MARK: - Equatable
 
-extension {{ spec.title }}: Diffable, DiffableBoxProtocol {
-    public var diffIdentifier: String {
+func == (lhs: {{spec.title}}, rhs: {{spec.title}}) -> Bool {
+{% for property in spec.properties %}
+    guard lhs.{{property.name}} == rhs.{{property.name}} else { return false }
+{% endfor %}
+    return true
+}
+
+// MARK: - ListDiffabel
+
+extension {{ spec.title }}: ListDiffable {
+
+    func diffIdentifier() -> NSObjectProtocol {
 {% if spec.identifier %}
 {% for property in spec.properties %}
 {% if property.key == spec.identifier %}
-        return "\({{ property.name }})"
+        return {{ property.name }} as NSObjectProtocol
 {% endif %}
 {% endfor %}
 {% else %}
-        return ""
+        guard let object = self as? NSObjectProtocol else { fatalError() }
+        return object
 {% endif %}
     }
 
-    static public func == (lhs: {{spec.title}}, rhs: {{spec.title}}) -> Bool {
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
+        guard let object = object as? {{ spec.title }} else { return false }
+
 {% for property in spec.properties %}
-        guard lhs.{{property.name}} == rhs.{{property.name}} else { return false }
+        guard {{property.name}} == object.{{property.name}} else { return false }
 {% endfor %}
         return true
     }

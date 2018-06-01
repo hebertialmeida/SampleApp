@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Photo: Codable, Equatable {
+public struct Photo: Codable {
 
     // MARK: Instance Variables
 
@@ -43,21 +43,27 @@ public struct Photo: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: Photo, rhs: Photo) -> Bool {
-    guard lhs.user == rhs.user else { return false }
-    guard lhs.updatedAt == rhs.updatedAt else { return false }
-    guard lhs.likes == rhs.likes else { return false }
-    guard lhs.width == rhs.width else { return false }
-    guard lhs.description == rhs.description else { return false }
-    guard lhs.sponsored == rhs.sponsored else { return false }
-    guard lhs.color == rhs.color else { return false }
-    guard lhs.height == rhs.height else { return false }
-    guard lhs.id == rhs.id else { return false }
-    guard lhs.createdAt == rhs.createdAt else { return false }
-    guard lhs.urls == rhs.urls else { return false }
-    guard lhs.likedByUser == rhs.likedByUser else { return false }
-    guard lhs.links == rhs.links else { return false }
-    return true
+extension Photo: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return "\(id)"
+    }
+
+    static public func == (lhs: Photo, rhs: Photo) -> Bool {
+        guard lhs.user == rhs.user else { return false }
+        guard lhs.updatedAt == rhs.updatedAt else { return false }
+        guard lhs.likes == rhs.likes else { return false }
+        guard lhs.width == rhs.width else { return false }
+        guard lhs.description == rhs.description else { return false }
+        guard lhs.sponsored == rhs.sponsored else { return false }
+        guard lhs.color == rhs.color else { return false }
+        guard lhs.height == rhs.height else { return false }
+        guard lhs.id == rhs.id else { return false }
+        guard lhs.createdAt == rhs.createdAt else { return false }
+        guard lhs.urls == rhs.urls else { return false }
+        guard lhs.likedByUser == rhs.likedByUser else { return false }
+        guard lhs.links == rhs.links else { return false }
+        return true
+    }
 }

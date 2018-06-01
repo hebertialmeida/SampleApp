@@ -9,7 +9,7 @@
 import Foundation
 
 /// Definition of a User
-public struct User: Codable, Equatable {
+public struct User: Codable {
 
     // MARK: Instance Variables
 
@@ -30,14 +30,20 @@ public struct User: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: User, rhs: User) -> Bool {
-    guard lhs.profileImage == rhs.profileImage else { return false }
-    guard lhs.name == rhs.name else { return false }
-    guard lhs.location == rhs.location else { return false }
-    guard lhs.id == rhs.id else { return false }
-    guard lhs.username == rhs.username else { return false }
-    guard lhs.bio == rhs.bio else { return false }
-    return true
+extension User: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return "\(id)"
+    }
+
+    static public func == (lhs: User, rhs: User) -> Bool {
+        guard lhs.profileImage == rhs.profileImage else { return false }
+        guard lhs.name == rhs.name else { return false }
+        guard lhs.location == rhs.location else { return false }
+        guard lhs.id == rhs.id else { return false }
+        guard lhs.username == rhs.username else { return false }
+        guard lhs.bio == rhs.bio else { return false }
+        return true
+    }
 }

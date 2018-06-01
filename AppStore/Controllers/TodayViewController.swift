@@ -8,59 +8,22 @@
 
 import UIKit
 import SnapKit
+import IGListKit
 
 final class TodayViewController: UIViewController {
 
-    var collectionView: UICollectionView!
-    var topHeaderView: UIVisualEffectView!
-    var dataSource = [Section]()
+    lazy var adapter: ListAdapter = {
+        return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 2)
+    }()
 
-    struct Section {
-        let date: Date
-        let collections: [Collection]
-    }
+    lazy var collectionView: UICollectionView = {
+        let layout = ListCollectionViewLayout(stickyHeaders: false, scrollDirection: .vertical, topContentInset: 30, stretchToEdge: false)
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+    }()
 
-    struct Identifier {
-        static let cell = "todayCell"
-        static let header = "todayHeader"
-    }
-
-    init() {
-        super.init(nibName: nil, bundle: nil)
-
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width-40, height: 412)
-        layout.minimumLineSpacing = 30
-
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
-        collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: Identifier.cell)
-        collectionView.register(TodayHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Identifier.header)
-        view.addSubview(collectionView)
-
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
-            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
-            make.bottom.equalTo(view.snp.bottom)
-        }
-
-        // Top Header
-        let navBarHeight = UIApplication.shared.statusBarFrame.height
-        topHeaderView = UIVisualEffectView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navBarHeight))
-        topHeaderView.effect = UIBlurEffect(style: .regular)
-        topHeaderView.autoresizingMask = [.flexibleWidth]
-        topHeaderView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
-        view.insertSubview(topHeaderView, aboveSubview: collectionView)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var objects = [Any]()
+    var currentPage = 1
+    var loading = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,99 +31,89 @@ final class TodayViewController: UIViewController {
         title = NSLocalizedString("Today", comment: "")
         tabBarItem.image = UIImage(named: "icon-tabbar-today")
 
-        fetchData(page: 1)
+        setupViews()
+        fetchData(page: currentPage)
+    }
+
+    func setupViews() {
+        collectionView.isPrefetchingEnabled = false
+        collectionView.backgroundColor = .white
+//        collectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+        view.addSubview(collectionView)
+
+        collectionView.snp.makeConstraints { make in
+//            make.top.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
+            make.bottom.equalTo(view.snp.bottom)
+        }
+
+        adapter.collectionView = collectionView
+        adapter.dataSource = self
+        adapter.scrollViewDelegate = self
+
+        // Top Header
+        let topHeaderView = UIVisualEffectView(frame: .zero)
+        topHeaderView.effect = UIBlurEffect(style: .regular)
+        topHeaderView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        view.insertSubview(topHeaderView, aboveSubview: collectionView)
+
+        topHeaderView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.height.equalTo(UIApplication.shared.statusBarFrame.height)
+        }
     }
 
     func fetchData(page: Int) {
-        Api.getFeaturedCollections(page: page, perPage: 400) { [weak self] response in
-//        Api.getCuratedCollections(page: page, perPage: 400) { [weak self] response in
+        loading = true
+
+        Api.getFeaturedCollections(page: page, perPage: 10) { [weak self] response in
+//        Api.getCuratedCollections(page: page, perPage: 10) { [weak self] response in
             guard let strongSelf = self else { return }
+            strongSelf.loading = false
 
             switch response {
             case let .success(collections):
                 guard let first = collections.first else { return }
-                let section = Section(date: first.publishedAt, collections: collections)
-                strongSelf.dataSource.append(section)
-                strongSelf.collectionView.reloadData()
+                let list = CollectionSectionModel(id: "page\(strongSelf.currentPage)", date: first.publishedAt, collections: collections)
+                let animated = strongSelf.currentPage == 1 ? true : false
+                strongSelf.objects.append(list)
+                strongSelf.adapter.performUpdates(animated: animated, completion: nil)
+                strongSelf.currentPage += 1
 
             case let .failure(error):
                 debugPrint(error)
             }
         }
     }
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+// MARK: ListAdapterDataSource
+
+extension TodayViewController: ListAdapterDataSource {
+    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+        return objects.compactMap({ ($0 as? DiffableBoxProtocol)?.asDiffableBox() })
+    }
+
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
+        return CollectionSectionController()
+    }
+
+    func emptyView(for listAdapter: ListAdapter) -> UIView? {
+        return nil
     }
 }
 
-// MARK: UICollectionViewDataSource
+// MARK: UIScrollViewDelegate
 
-extension TodayViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataSource.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource[section].collections.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.cell, for: indexPath) as? TodayCollectionViewCell else {
-            return UICollectionViewCell()
+extension TodayViewController: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if !loading && distance < 300 {
+            fetchData(page: currentPage)
+            debugPrint("fetch \(currentPage)")
         }
-
-        let collection = dataSource[indexPath.section].collections[indexPath.row]
-        let photo = collection.coverPhoto
-        let photoColor = UIColor(photo.color)
-        var textColor: UIColor {
-            guard let contrast = photoColor?.contrastRatio(with: .black), contrast > 16 else {
-                return .white
-            }
-            return .black
-        }
-
-        cell.backgroundColor = UIColor(photo.color)
-        cell.autoresizingMask = [.flexibleHeight]
-        cell.setContent(
-            imageUrl: photo.urls.regular,
-            label: "Curated by \(collection.user.name)".uppercased(),
-            title: collection.title,
-            description: collection.description ?? "",
-            color: textColor
-        )
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Identifier.header, for: indexPath) as? TodayHeaderView else {
-            return UICollectionReusableView()
-        }
-
-        header.setContent(date: "Tuesday, May 29".uppercased(), title: "Today")
-        return header
-    }
-}
-
-// MARK: UICollectionViewDelegate
-
-extension TodayViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("")
-    }
-}
-
-extension TodayViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let top: CGFloat = section == 0 ? 10 : 20
-        return UIEdgeInsets(top: top, left: 0, bottom: 60, right: 0)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let height: CGFloat = section == 0 ? 58 : 54
-        return CGSize(width: view.frame.width, height: height)
     }
 }

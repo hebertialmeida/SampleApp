@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Collection: Codable, Equatable {
+public struct Collection: Codable {
 
     // MARK: Instance Variables
 
@@ -41,20 +41,26 @@ public struct Collection: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: Collection, rhs: Collection) -> Bool {
-    guard lhs.curated == rhs.curated else { return false }
-    guard lhs.publishedAt == rhs.publishedAt else { return false }
-    guard lhs.previewPhotos == rhs.previewPhotos else { return false }
-    guard lhs.updatedAt == rhs.updatedAt else { return false }
-    guard lhs.id == rhs.id else { return false }
-    guard lhs.user == rhs.user else { return false }
-    guard lhs.featured == rhs.featured else { return false }
-    guard lhs.description == rhs.description else { return false }
-    guard lhs.title == rhs.title else { return false }
-    guard lhs.links == rhs.links else { return false }
-    guard lhs.totalPhotos == rhs.totalPhotos else { return false }
-    guard lhs.coverPhoto == rhs.coverPhoto else { return false }
-    return true
+extension Collection: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return "\(id)"
+    }
+
+    static public func == (lhs: Collection, rhs: Collection) -> Bool {
+        guard lhs.curated == rhs.curated else { return false }
+        guard lhs.publishedAt == rhs.publishedAt else { return false }
+        guard lhs.previewPhotos == rhs.previewPhotos else { return false }
+        guard lhs.updatedAt == rhs.updatedAt else { return false }
+        guard lhs.id == rhs.id else { return false }
+        guard lhs.user == rhs.user else { return false }
+        guard lhs.featured == rhs.featured else { return false }
+        guard lhs.description == rhs.description else { return false }
+        guard lhs.title == rhs.title else { return false }
+        guard lhs.links == rhs.links else { return false }
+        guard lhs.totalPhotos == rhs.totalPhotos else { return false }
+        guard lhs.coverPhoto == rhs.coverPhoto else { return false }
+        return true
+    }
 }

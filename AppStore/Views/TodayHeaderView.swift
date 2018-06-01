@@ -25,13 +25,13 @@ final class TodayHeaderView: UICollectionReusableView {
 
         dateLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.left.right.equalToSuperview().inset(20)
+            make.left.right.equalToSuperview()
         }
 
         dayLabel.snp.makeConstraints { make in
             make.top.equalTo(dateLabel.snp.bottom).offset(3)
-            make.left.right.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.bottom.greaterThanOrEqualToSuperview().priority(.low)
         }
     }
 

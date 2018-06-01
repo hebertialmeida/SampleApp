@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct PreviewPhoto: Codable, Equatable {
+public struct PreviewPhoto: Codable {
 
     // MARK: Instance Variables
 
@@ -21,10 +21,16 @@ public struct PreviewPhoto: Codable, Equatable {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Diffable
 
-public func == (lhs: PreviewPhoto, rhs: PreviewPhoto) -> Bool {
-    guard lhs.id == rhs.id else { return false }
-    guard lhs.urls == rhs.urls else { return false }
-    return true
+extension PreviewPhoto: Diffable, DiffableBoxProtocol {
+    public var diffIdentifier: String {
+        return "\(id)"
+    }
+
+    static public func == (lhs: PreviewPhoto, rhs: PreviewPhoto) -> Bool {
+        guard lhs.id == rhs.id else { return false }
+        guard lhs.urls == rhs.urls else { return false }
+        return true
+    }
 }

@@ -15,7 +15,7 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     let smallLabel = UILabel()
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
-    lazy var imageView = UIImageView(frame: bounds)
+    let imageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,6 +69,7 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     }
 
     func setContent(imageUrl: URL?, label: String, title: String, description: String, color: UIColor) {
+        imageView.pin_updateWithProgress = true
         imageView.pin_setImage(from: imageUrl)
 
         smallLabel.attributedText = TextStyle.cardSmall(label, color: color)

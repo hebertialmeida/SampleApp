@@ -1,0 +1,14 @@
+{
+  "title": "PhotoSectionModel",
+  "type": "object",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "string"},
+    "date": {"type": "string", "format": "date"},
+    "photos": {
+      "type": "array",
+      "items": {"$ref": "Photo.json"}
+    }
+  },
+  "required": ["id", "date", "photos"]
+}

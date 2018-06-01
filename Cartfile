@@ -1,3 +1,4 @@
 github "Alamofire/Alamofire" ~> 4.7
 github "pinterest/PINRemoteImage"
 github "SnapKit/SnapKit" ~> 4.0.0
+github "Instagram/IGListKit" ~> 3.0
