@@ -28,14 +28,32 @@ extension UIImageView {
 
             guard
                 let data = data,
-                let imageToCache = UIImage(data: data)
-            else { return }
+                let imageToCache = UIImage(data: data),
+                let decodedImage = self?.decodedImage(imageToCache)?.cgImage
+            else {
+                return
+            }
 
             DispatchQueue.main.async {
-                self?.image = imageToCache
+                self?.image = UIImage(cgImage: decodedImage)
             }
 
             imageCache.setObject(imageToCache, forKey: url as NSURL)
         }.resume()
+    }
+
+    private func decodedImage(_ image: UIImage) -> UIImage? {
+      guard let newImage = image.cgImage else { return nil }
+
+      let colorSpace = CGColorSpaceCreateDeviceRGB()
+      let context = CGContext(data: nil, width: newImage.width, height: newImage.height, bitsPerComponent: 8, bytesPerRow: newImage.width * 4, space: colorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)
+
+      context?.draw(newImage, in: CGRect(x: 0, y: 0, width: newImage.width, height: newImage.height))
+      let drawnImage = context?.makeImage()
+
+      if let drawnImage = drawnImage {
+        return UIImage(cgImage: drawnImage)
+      }
+      return nil
     }
 }
