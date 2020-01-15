@@ -38,7 +38,6 @@ final class TodayViewController: UIViewController {
     func setupViews() {
         collectionView.isPrefetchingEnabled = false
         collectionView.backgroundColor = .white
-//        collectionView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         view.addSubview(collectionView)
 
         collectionView.snp.makeConstraints { make in
@@ -54,8 +53,7 @@ final class TodayViewController: UIViewController {
         adapter.scrollViewDelegate = self
 
         // Top Header
-        let topHeaderView = UIVisualEffectView(frame: .zero)
-        topHeaderView.effect = UIBlurEffect(style: .regular)
+        let topHeaderView = UIView(frame: .zero)
         topHeaderView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         view.insertSubview(topHeaderView, aboveSubview: collectionView)
 
@@ -70,7 +68,6 @@ final class TodayViewController: UIViewController {
         loading = true
 
         Api.getFeaturedCollections(page: page, perPage: 10) { [weak self] response in
-//        Api.getCuratedCollections(page: page, perPage: 10) { [weak self] response in
             guard let strongSelf = self else { return }
             strongSelf.loading = false
 
@@ -111,7 +108,7 @@ extension TodayViewController: ListAdapterDataSource {
 extension TodayViewController: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
-        if !loading && distance < 300 {
+        if !loading && distance < scrollView.bounds.height {
             fetchData(page: currentPage)
             debugPrint("fetch \(currentPage)")
         }

@@ -12,7 +12,7 @@ public struct PreviewPhoto: Codable {
 
     // MARK: Instance Variables
 
-    public let id: Int
+    public let id: String
     public let urls: PhotoUrls
 
     private enum CodingKeys: String, CodingKey {

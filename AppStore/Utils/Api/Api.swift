@@ -6,8 +6,6 @@
 //  Copyright © 2018 Heberti Almeida. All rights reserved.
 //
 
-import Alamofire
-
 enum OrderBy: String {
     case latest
     case oldest
@@ -15,37 +13,22 @@ enum OrderBy: String {
 }
 
 struct Api {
-    static func getPhotos(page: Int, perPage: Int, orderBy: OrderBy, completion: @escaping (Result<[Photo]>) -> Void) {
+    static func getPhotos(page: Int, perPage: Int, orderBy: OrderBy, completion: @escaping (Result<[Photo], Error>) -> Void) {
         let params: Parameters = [
             "per_page": perPage,
             "page": page,
             "order_by": orderBy
             ]
 
-        Route.photos(params).request(as: [Photo].self) { response in
-            completion(response)
-        }
+        Route.photos(params).request(as: [Photo].self, completion: completion)
     }
 
-    static func getCuratedCollections(page: Int, perPage: Int, completion: @escaping (Result<[Collection]>) -> Void) {
+    static func getFeaturedCollections(page: Int, perPage: Int, completion: @escaping (Result<[Collection], Error>) -> Void) {
         let params: Parameters = [
             "per_page": perPage,
             "page": page
         ]
 
-        Route.collectionsCurated(params).request(as: [Collection].self) { response in
-            completion(response)
-        }
-    }
-
-    static func getFeaturedCollections(page: Int, perPage: Int, completion: @escaping (Result<[Collection]>) -> Void) {
-        let params: Parameters = [
-            "per_page": perPage,
-            "page": page
-        ]
-
-        Route.collectionsFeatured(params).request(as: [Collection].self) { response in
-            completion(response)
-        }
+        Route.collectionsFeatured(params).request(as: [Collection].self, completion: completion)
     }
 }

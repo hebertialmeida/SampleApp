@@ -11,7 +11,7 @@ import UIKit
 struct TextStyle {
 
     static func headerSmall(_ string: String) -> NSMutableAttributedString {
-        let attributes: [NSAttributedStringKey: Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.boldSystemFont(ofSize: 13),
             .foregroundColor: UIColor(white: 0, alpha: 0.4)
         ]
@@ -19,7 +19,7 @@ struct TextStyle {
     }
 
     static func headerBig(_ string: String) -> NSMutableAttributedString {
-        let attributes: [NSAttributedStringKey: Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 34, weight: .bold),
             .foregroundColor: UIColor.black
         ]
@@ -28,28 +28,28 @@ struct TextStyle {
 
     // MARK: Card
 
-    static func cardSmall(_ string: String, color: UIColor) -> NSMutableAttributedString {
-        let attributes: [NSAttributedStringKey: Any] = [
+    static func cardSmall(_ string: String, color: UIColor?) -> NSMutableAttributedString {
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.boldSystemFont(ofSize: 15),
-            .foregroundColor: color.withAlphaComponent(0.7),
+            .foregroundColor: color?.withAlphaComponent(0.7) ?? .black,
             .kern: 0.3 as AnyObject
         ]
         return NSMutableAttributedString(string: string, attributes: attributes)
     }
 
-    static func cardTitle(_ string: String, color: UIColor) -> NSMutableAttributedString {
-        let attributes: [NSAttributedStringKey: Any] = [
+    static func cardTitle(_ string: String, color: UIColor?) -> NSMutableAttributedString {
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 27, weight: .bold),
-            .foregroundColor: color,
+            .foregroundColor: color ?? .black,
             .kern: 0.5 as AnyObject
         ]
         return NSMutableAttributedString(string: string, attributes: attributes)
     }
 
-    static func cardDescription(_ string: String, color: UIColor) -> NSMutableAttributedString {
-        let attributes: [NSAttributedStringKey: Any] = [
+    static func cardDescription(_ string: String, color: UIColor?) -> NSMutableAttributedString {
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 15),
-            .foregroundColor: color,
+            .foregroundColor: color ?? .black,
             .kern: 0.3 as AnyObject
         ]
         return NSMutableAttributedString(string: string, attributes: attributes)

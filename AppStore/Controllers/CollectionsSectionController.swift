@@ -16,7 +16,6 @@ final class CollectionSectionController: ListSectionController {
         super.init()
         supplementaryViewSource = self
         minimumLineSpacing = 30
-//        minimumInteritemSpacing = 30
         inset = UIEdgeInsets(top: 30, left: 20, bottom: 30, right: 20)
     }
 
@@ -35,27 +34,13 @@ final class CollectionSectionController: ListSectionController {
 
         let collection = dataSource.collections[index]
         let photo = collection.coverPhoto
-        let photoColor = UIColor(photo.color)
-        var textColor: UIColor {
-            if let contrast = photoColor?.contrastRatio(with: .black), contrast > 16 {
-                return .black
-            }
 
-            if let contrast = photoColor?.contrastRatio(with: .white), contrast > 16 {
-                return .white
-            }
-
-            if let color = UIColor(photo.color)?.complementary { return color }
-            return .black
-        }
-
-        cell.backgroundColor = UIColor(photo.color)
         cell.setContent(
             imageUrl: photo.urls.regular,
             label: "Curated by \(collection.user.name)".uppercased(),
             title: collection.title,
             description: collection.description ?? "",
-            color: textColor
+            color: UIColor(photo.color)
         )
         return cell
     }
@@ -71,11 +56,11 @@ final class CollectionSectionController: ListSectionController {
 
 extension CollectionSectionController: ListSupplementaryViewSource {
     func supportedElementKinds() -> [String] {
-        return [UICollectionElementKindSectionHeader]
+        return [UICollectionView.elementKindSectionHeader]
     }
 
     func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
-        guard let header = collectionContext?.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, for: self, class: TodayHeaderView.self, at: index) as? TodayHeaderView else {
+        guard let header = collectionContext?.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, for: self, class: TodayHeaderView.self, at: index) as? TodayHeaderView else {
             return UICollectionReusableView()
         }
 

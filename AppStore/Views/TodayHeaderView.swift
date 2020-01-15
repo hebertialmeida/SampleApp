@@ -11,16 +11,18 @@ import SnapKit
 
 final class TodayHeaderView: UICollectionReusableView {
 
-    let dateLabel = UILabel()
-    let dayLabel = UILabel()
+    private let dateLabel = UILabel()
+    private let dayLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         dateLabel.numberOfLines = 1
+        dateLabel.backgroundColor = .white
         addSubview(dayLabel)
 
         dayLabel.numberOfLines = 1
+        dayLabel.backgroundColor = .white
         addSubview(dateLabel)
 
         dateLabel.snp.makeConstraints { make in

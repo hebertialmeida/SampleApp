@@ -18,7 +18,7 @@ public protocol DiffableBoxProtocol {
 
 extension DiffableBoxProtocol where Self: Diffable {
     public func asDiffableBox() -> ListDiffable {
-        return DiffableBox(value: self, identifier: self.diffIdentifier  as NSObjectProtocol, equal: ==)
+        return DiffableBox(value: self, identifier: self.diffIdentifier as NSObjectProtocol, equal: ==)
     }
 }
 
@@ -28,7 +28,7 @@ final class DiffableBox<T: Diffable>: ListDiffable {
     let identifier: NSObjectProtocol
     let equal: (T, T) -> Bool
 
-    init(value: T, identifier: NSObjectProtocol, equal: @escaping(T, T) -> Bool) {
+    init(value: T, identifier: NSObjectProtocol, equal: @escaping (T, T) -> Bool) {
         self.value = value
         self.identifier = identifier
         self.equal = equal

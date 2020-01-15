@@ -8,20 +8,20 @@
 
 import UIKit
 import SnapKit
-import PINRemoteImage
 
 final class TodayCollectionViewCell: UICollectionViewCell {
 
-    let smallLabel = UILabel()
-    let titleLabel = UILabel()
-    let descriptionLabel = UILabel()
-    let imageView = UIImageView()
+    private let smallLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private let imageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         let corner: CGFloat = 14
         layer.cornerRadius = corner
+        layer.isOpaque = true
 
         layer.shadowOffset = CGSize(width: 0, height: 10)
         layer.shadowRadius = 18
@@ -31,6 +31,7 @@ final class TodayCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = corner-1
+        imageView.backgroundColor = .white
         contentView.addSubview(imageView)
 
         // Labels
@@ -68,10 +69,10 @@ final class TodayCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setContent(imageUrl: URL?, label: String, title: String, description: String, color: UIColor) {
-        imageView.pin_updateWithProgress = true
-        imageView.pin_setImage(from: imageUrl)
+    func setContent(imageUrl: URL?, label: String, title: String, description: String, color: UIColor?) {
+        backgroundColor = color
 
+        imageView.setImage(imageUrl)
         smallLabel.attributedText = TextStyle.cardSmall(label, color: color)
         titleLabel.attributedText = TextStyle.cardTitle(title, color: color)
         descriptionLabel.attributedText = TextStyle.cardDescription(description, color: color)
@@ -79,7 +80,6 @@ final class TodayCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.pin_cancelImageDownload()
-        imageView.pin_clearImages()
+        imageView.image = nil
     }
 }

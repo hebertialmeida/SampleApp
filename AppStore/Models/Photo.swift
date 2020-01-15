@@ -17,7 +17,6 @@ public struct Photo: Codable {
     public let likes: Int
     public let width: Int
     public let description: String?
-    public let sponsored: Bool
     public let color: String
     public let height: Int
     public let id: String
@@ -32,7 +31,6 @@ public struct Photo: Codable {
         case likes
         case width
         case description
-        case sponsored
         case color
         case height
         case id
@@ -56,7 +54,6 @@ extension Photo: Diffable, DiffableBoxProtocol {
         guard lhs.likes == rhs.likes else { return false }
         guard lhs.width == rhs.width else { return false }
         guard lhs.description == rhs.description else { return false }
-        guard lhs.sponsored == rhs.sponsored else { return false }
         guard lhs.color == rhs.color else { return false }
         guard lhs.height == rhs.height else { return false }
         guard lhs.id == rhs.id else { return false }
