@@ -137,7 +137,6 @@
 				1AB2DEC020BE3A320033119F /* Utils */,
 				1AB2DED020BE5D710033119F /* Models */,
 				1AB2DEC620BE52040033119F /* Views */,
-				1AB2DEC720BE522C0033119F /* Controllers */,
 				1A75494020BDDEDC00D9D568 /* Assets.xcassets */,
 				1A75494220BDDEDC00D9D568 /* LaunchScreen.storyboard */,
 				1A75494520BDDEDC00D9D568 /* Info.plist */,
@@ -171,20 +170,11 @@
 		1AB2DEC620BE52040033119F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1AB2DEBD20BE30500033119F /* TodayHeaderView.swift */,
-				1A75494D20BDF7D000D9D568 /* TodayCollectionViewCell.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		1AB2DEC720BE522C0033119F /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
+				BF76F37823CF99E60084BEC2 /* Today */,
 				1A75494B20BDEA6500D9D568 /* TabBarController.swift */,
-				1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */,
 				1AD8AF3220C0A78C00655B05 /* CollectionsSectionController.swift */,
 			);
-			path = Controllers;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		1AB2DECA20BE52DC0033119F /* Api */ = {
@@ -213,6 +203,16 @@
 				1AB2DED420BE66DA0033119F /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		BF76F37823CF99E60084BEC2 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				1AB2DEBD20BE30500033119F /* TodayHeaderView.swift */,
+				1A75494D20BDF7D000D9D568 /* TodayCollectionViewCell.swift */,
+				1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */,
+			);
+			path = Today;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
