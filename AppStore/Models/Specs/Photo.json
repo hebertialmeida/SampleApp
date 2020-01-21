@@ -12,10 +12,9 @@
     "description": {"type": "string"},
     "urls": {"$ref": "PhotoUrls.json"},
     "links": {"$ref": "PhotoLinks.json"},
-    "sponsored": {"type": "boolean"},
     "likes": {"type": "integer"},
     "liked_by_user": {"type": "boolean"},
     "user": {"$ref": "User.json"},
   },
-  "required": ["id", "created_at", "updated_at", "width", "height", "color", "urls", "links", "sponsored", "likes", "liked_by_user", "user"]
+  "required": ["id", "created_at", "updated_at", "width", "height", "color", "urls", "links", "likes", "liked_by_user", "user"]
 }

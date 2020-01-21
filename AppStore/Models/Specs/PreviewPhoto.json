@@ -3,7 +3,7 @@
   "type": "object",
   "identifier": "id",
   "properties": {
-    "id": {"type": "integer"},
+    "id": {"type": "string"},
     "urls": {"$ref": "PhotoUrls.json"}
   },
   "required": ["id", "urls"]

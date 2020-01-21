@@ -101,8 +101,8 @@ public extension HexColor {
     typealias rgbComponents = (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     func components() -> rgbComponents? {
       
-      var hexValue: UInt32 = 0
-      guard Scanner(string: value).scanHexInt32(&hexValue) else {
+      var hexValue: UInt64 = 0
+      guard Scanner(string: value).scanHexInt64(&hexValue) else {
         return nil
       }
       

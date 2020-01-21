@@ -42,6 +42,7 @@ extension UIImageView {
         }.resume()
     }
 
+    // Decode image off the main thread
     private func decodedImage(_ image: UIImage) -> UIImage? {
       guard let newImage = image.cgImage else { return nil }
 

@@ -11,6 +11,8 @@ import SnapKit
 
 final class TodayCollectionViewCell: UICollectionViewCell {
 
+    static var identifier: String = "TodayCell"
+
     private let smallLabel = UILabel()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()

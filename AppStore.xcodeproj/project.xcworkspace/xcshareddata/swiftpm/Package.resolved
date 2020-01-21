@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "ConsistencyManager",
+        "repositoryURL": "https://github.com/plivesey/ConsistencyManager",
+        "state": {
+          "branch": "master",
+          "revision": "8bcd8b3c9b905dd2f4f3aa911946e4b57bad2d72",
+          "version": null
+        }
+      },
+      {
+        "package": "RocketData",
+        "repositoryURL": "https://github.com/plivesey/RocketData",
+        "state": {
+          "branch": "master",
+          "revision": "91f729200be2afecb752ac527421c24ed16c89b2",
+          "version": null
+        }
+      },
+      {
         "package": "SnapKit",
         "repositoryURL": "https://github.com/SnapKit/SnapKit",
         "state": {

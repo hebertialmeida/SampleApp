@@ -8,49 +8,63 @@
 
 import UIKit
 import SnapKit
-import IGListKit
+
+enum Section {
+  case collections
+}
 
 final class TodayViewController: UIViewController {
 
-    lazy var adapter: ListAdapter = {
-        return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 2)
-    }()
+    let viewModel = TodayViewModel()
 
     lazy var collectionView: UICollectionView = {
-        let layout = ListCollectionViewLayout(stickyHeaders: false, scrollDirection: .vertical, topContentInset: 30, stretchToEdge: false)
-        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: view.frame.width-40, height: 412)
+        layout.minimumLineSpacing = 30
+        layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 30, right: 20)
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: TodayCollectionViewCell.identifier)
+        return collectionView
     }()
 
-    var objects = [Any]()
-    var currentPage = 1
-    var loading = false
+    // MARK: View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         title = NSLocalizedString("Today", comment: "")
         tabBarItem.image = UIImage(named: "icon-tabbar-today")
 
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(viewModel, action: #selector(TodayViewModel.refreshData), for: .valueChanged)
+
         setupViews()
-        fetchData(page: currentPage)
+        bindViewModel()
+    }
+
+    func bindViewModel() {
+        viewModel.updateUI = { old, new in
+            self.collectionView.reloadData()
+            self.collectionView.refreshControl?.endRefreshing()
+        }
+
+//        let dataSource = UICollectionViewDiffableDataSource<Section, Collection>()
+
+        viewModel.fetchData()
     }
 
     func setupViews() {
-        collectionView.isPrefetchingEnabled = false
         collectionView.backgroundColor = .white
         view.addSubview(collectionView)
 
         collectionView.snp.makeConstraints { make in
-//            make.top.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
             make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
             make.bottom.equalTo(view.snp.bottom)
         }
-
-        adapter.collectionView = collectionView
-        adapter.dataSource = self
-        adapter.scrollViewDelegate = self
 
         // Top Header
         let topHeaderView = UIView(frame: .zero)
@@ -60,57 +74,63 @@ final class TodayViewController: UIViewController {
         topHeaderView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.right.equalToSuperview()
-            make.height.equalTo(UIApplication.shared.statusBarFrame.height)
-        }
-    }
-
-    func fetchData(page: Int) {
-        loading = true
-
-        Api.getFeaturedCollections(page: page, perPage: 10) { [weak self] response in
-            guard let strongSelf = self else { return }
-            strongSelf.loading = false
-
-            switch response {
-            case let .success(collections):
-                guard let first = collections.first else { return }
-                let list = CollectionSectionModel(id: "page\(strongSelf.currentPage)", date: first.publishedAt, collections: collections)
-                let animated = strongSelf.currentPage == 1 ? true : false
-                strongSelf.objects.append(list)
-                strongSelf.adapter.performUpdates(animated: animated, completion: nil)
-                strongSelf.currentPage += 1
-
-            case let .failure(error):
-                debugPrint(error)
-            }
+            make.height.equalTo(view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
         }
     }
 }
 
-// MARK: ListAdapterDataSource
+// MARK: UICollectionViewDataSource
 
-extension TodayViewController: ListAdapterDataSource {
-    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        return objects.compactMap({ ($0 as? DiffableBoxProtocol)?.asDiffableBox() })
+extension TodayViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfItemsIn(section)
     }
 
-    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        return CollectionSectionController()
-    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCollectionViewCell.identifier, for: indexPath) as! TodayCollectionViewCell
+        let collection = viewModel.dataSource[indexPath.row]
+        let photo = collection.coverPhoto
 
-    func emptyView(for listAdapter: ListAdapter) -> UIView? {
-        return nil
+        cell.setContent(
+            imageUrl: photo.urls.regular,
+            label: "Curated by \(collection.user.name)".uppercased(),
+            title: collection.title,
+            description: collection.description ?? "",
+            color: UIColor(photo.color)
+        )
+        return cell
     }
+}
+
+// MARK: UICollectionViewDelegate
+
+extension TodayViewController: UICollectionViewDelegate {
+
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodayHeaderView.identifier, for: indexPath) as! TodayHeaderView
+//
+//        let collection = viewModel.dataSource[indexPath.row]
+//        collection
+//        let date = dataSource.date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "MMMM dd"
+//        let monthDay: String = dateFormatter.string(from: date)
+//        dateFormatter.dateFormat = "EEEE"
+//        let weekday: String = dateFormatter.string(from: date)
+//        header.setContent(date: monthDay.uppercased(), title: weekday)
+//        return header
+//    }
+
 }
 
 // MARK: UIScrollViewDelegate
 
 extension TodayViewController: UIScrollViewDelegate {
+
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
-        if !loading && distance < scrollView.bounds.height {
-            fetchData(page: currentPage)
-            debugPrint("fetch \(currentPage)")
+        if distance < scrollView.bounds.height {
+            viewModel.fetchData()
         }
     }
 }
