@@ -36,6 +36,8 @@
 		BF76F37723CF930E0084BEC2 /* UIImageView+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF76F37623CF930E0084BEC2 /* UIImageView+Cache.swift */; };
 		BF94FAEB23D0EAA9000D0878 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF94FAEA23D0EAA9000D0878 /* TodayViewModel.swift */; };
 		BF94FAEE23D62179000D0878 /* RocketData in Frameworks */ = {isa = PBXBuildFile; productRef = BF94FAED23D62179000D0878 /* RocketData */; };
+		BF94FAF023D76141000D0878 /* RocketDataSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF94FAEF23D76141000D0878 /* RocketDataSetup.swift */; };
+		BF94FAF323D76273000D0878 /* Disk in Frameworks */ = {isa = PBXBuildFile; productRef = BF94FAF223D76273000D0878 /* Disk */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,7 @@
 		BF76F37423CF7D320084BEC2 /* ParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoder.swift; sourceTree = "<group>"; };
 		BF76F37623CF930E0084BEC2 /* UIImageView+Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Cache.swift"; sourceTree = "<group>"; };
 		BF94FAEA23D0EAA9000D0878 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
+		BF94FAEF23D76141000D0878 /* RocketDataSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDataSetup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF94FAEE23D62179000D0878 /* RocketData in Frameworks */,
+				BF94FAF323D76273000D0878 /* Disk in Frameworks */,
 				BF76F37123CF7CB40084BEC2 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				1A75493920BDDEDA00D9D568 /* AppDelegate.swift */,
+				BF94FAEF23D76141000D0878 /* RocketDataSetup.swift */,
 				1AB2DEC020BE3A320033119F /* Utils */,
 				1AB2DED020BE5D710033119F /* Models */,
 				1AB2DEC620BE52040033119F /* Views */,
@@ -194,8 +199,8 @@
 			children = (
 				1AB2DEBD20BE30500033119F /* TodayHeaderView.swift */,
 				1A75494D20BDF7D000D9D568 /* TodayCollectionViewCell.swift */,
-				1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */,
 				BF94FAEA23D0EAA9000D0878 /* TodayViewModel.swift */,
+				1A75493B20BDDEDA00D9D568 /* TodayViewController.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -219,6 +224,7 @@
 			packageProductDependencies = (
 				BF76F37023CF7CB40084BEC2 /* SnapKit */,
 				BF94FAED23D62179000D0878 /* RocketData */,
+				BF94FAF223D76273000D0878 /* Disk */,
 			);
 			productName = AppStore;
 			productReference = 1A75493620BDDED900D9D568 /* AppStore.app */;
@@ -252,6 +258,7 @@
 			packageReferences = (
 				BF76F36F23CF7CB40084BEC2 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				BF94FAEC23D62179000D0878 /* XCRemoteSwiftPackageReference "RocketData" */,
+				BF94FAF123D76273000D0878 /* XCRemoteSwiftPackageReference "Disk" */,
 			);
 			productRefGroup = 1A75493720BDDED900D9D568 /* Products */;
 			projectDirPath = "";
@@ -288,6 +295,7 @@
 				1A0219A820BF1E2D00B23FE4 /* Collection.swift in Sources */,
 				1AB2DED720BE66DA0033119F /* Photo.swift in Sources */,
 				1A0219AB20BF242500B23FE4 /* PhotoLinks.swift in Sources */,
+				BF94FAF023D76141000D0878 /* RocketDataSetup.swift in Sources */,
 				1A75493C20BDDEDA00D9D568 /* TodayViewController.swift in Sources */,
 				1A0219AF20BF248000B23FE4 /* PhotoUrls.swift in Sources */,
 				1A0219A920BF1E2D00B23FE4 /* PreviewPhoto.swift in Sources */,
@@ -521,6 +529,14 @@
 				kind = branch;
 			};
 		};
+		BF94FAF123D76273000D0878 /* XCRemoteSwiftPackageReference "Disk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/saoudrizwan/Disk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -533,6 +549,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BF94FAEC23D62179000D0878 /* XCRemoteSwiftPackageReference "RocketData" */;
 			productName = RocketData;
+		};
+		BF94FAF223D76273000D0878 /* Disk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF94FAF123D76273000D0878 /* XCRemoteSwiftPackageReference "Disk" */;
+			productName = Disk;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

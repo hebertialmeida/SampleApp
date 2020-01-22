@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct PhotoSectionModel: Codable, Equatable {
     public let date: Date
@@ -27,4 +28,21 @@ public func == (lhs: PhotoSectionModel, rhs: PhotoSectionModel) -> Bool {
     guard lhs.id == rhs.id else { return false }
     guard lhs.photos == rhs.photos else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension PhotoSectionModel: Identifiable { }
+
+// MARK: - RocketData
+
+extension PhotoSectionModel: Model {
+    public func map(_ transform: (Model) -> Model?) -> PhotoSectionModel? {
+        let photos = self.photos.compactMap { transform($0) as? Photo }
+        return PhotoSectionModel(date: date, id: id, photos: photos)
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+        photos.forEach(visit)
+    }
 }

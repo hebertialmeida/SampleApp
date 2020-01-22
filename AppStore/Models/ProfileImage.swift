@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct ProfileImage: Codable, Equatable {
     public let large: URL?
@@ -27,4 +28,23 @@ public func == (lhs: ProfileImage, rhs: ProfileImage) -> Bool {
     guard lhs.medium == rhs.medium else { return false }
     guard lhs.small == rhs.small else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension ProfileImage: Hashable, Identifiable {
+    public var id: Int {
+        self.hashValue
+    }
+}
+
+// MARK: - RocketData
+
+extension ProfileImage: Model {
+    public func map(_ transform: (Model) -> Model?) -> ProfileImage? {
+        return self
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+    }
 }

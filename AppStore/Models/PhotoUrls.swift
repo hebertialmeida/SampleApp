@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct PhotoUrls: Codable, Equatable {
     public let full: URL
@@ -33,4 +34,23 @@ public func == (lhs: PhotoUrls, rhs: PhotoUrls) -> Bool {
     guard lhs.small == rhs.small else { return false }
     guard lhs.thumb == rhs.thumb else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension PhotoUrls: Hashable, Identifiable {
+    public var id: Int {
+        self.hashValue
+    }
+}
+
+// MARK: - RocketData
+
+extension PhotoUrls: Model {
+    public func map(_ transform: (Model) -> Model?) -> PhotoUrls? {
+        return self
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+    }
 }

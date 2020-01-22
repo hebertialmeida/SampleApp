@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct Collection: Codable, Equatable {
     public let coverPhoto: Photo
@@ -54,4 +55,27 @@ public func == (lhs: Collection, rhs: Collection) -> Bool {
     guard lhs.updatedAt == rhs.updatedAt else { return false }
     guard lhs.user == rhs.user else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension Collection: Identifiable { }
+
+// MARK: - RocketData
+
+extension Collection: Model {
+    public func map(_ transform: (Model) -> Model?) -> Collection? {
+        guard let coverPhoto = transform(self.coverPhoto) as? Photo else { return nil }
+        guard let links = transform(self.links) as? CollectionLinks else { return nil }
+        let previewPhotos = self.previewPhotos.compactMap { transform($0) as? PreviewPhoto }
+        guard let user = transform(self.user) as? User else { return nil }
+        return Collection(coverPhoto: coverPhoto, curated: curated, description: description, featured: featured, id: id, links: links, previewPhotos: previewPhotos, publishedAt: publishedAt, title: title, totalPhotos: totalPhotos, updatedAt: updatedAt, user: user)
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+        visit(coverPhoto)
+        visit(links)
+        previewPhotos.forEach(visit)
+        visit(user)
+    }
 }

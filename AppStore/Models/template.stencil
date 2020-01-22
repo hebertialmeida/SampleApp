@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 {% if spec.description %}
 /// {{ spec.description }}
@@ -35,4 +36,58 @@ public func == (lhs: {{spec.title}}, rhs: {{spec.title}}) -> Bool {
     guard lhs.{{property.name}} == rhs.{{property.name}} else { return false }
 {% endfor %}
     return true
+}
+
+// MARK: - Identifiable
+
+{% if spec.identifier %}
+extension {{spec.title}}: Identifiable { }
+{% else %}
+extension {{spec.title}}: Hashable, Identifiable {
+    public var id: Int {
+        self.hashValue
+    }
+}
+{% endif %}
+
+// MARK: - RocketData
+
+extension {{spec.title}}: Model {
+    public func map(_ transform: (Model) -> Model?) -> {{ spec.title }}? {
+{% if nestedObjects %}
+{% for property in spec.properties where property.nestedObject %}
+{% if property.array %}
+    {% if property.required %}
+        let {{ property.name }} = self.{{ property.name }}.compactMap { transform($0) as? {{ property.refType }} }
+        {% else %}
+        let {{ property.name }} = (self.{{ property.name }} ?? []).compactMap { transform($0) as? {{ property.refType }} }
+    {% endif %}
+{% else %}
+{% if property.required %}
+        guard let {{ property.name }} = transform(self.{{ property.name }}) as? {{ property.type }} else { return nil }
+{% endif %}
+{% endif %}
+{% endfor %}
+{% map spec.properties into initializerList using property %}{{ property.name }}: {{ property.name }}{% endmap %}
+        return {{spec.title}}({{ initializerList|join:", " }})
+{% else %}
+        return self
+{% endif %}
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+{% for property in spec.properties where property.nestedObject %}
+{% if not property.required %}
+        if let {{ property.name }} = {{ property.name }} {
+{% endif %}
+{% if property.array %}
+        {% if not property.required %}  {% endif %}{{ property.name }}.forEach(visit)
+{% else %}
+        {% if not property.required %}  {% endif %}visit({{ property.name }})
+{% endif %}
+{% if not property.required %}
+        }
+{% endif %}
+{% endfor %}
+    }
 }

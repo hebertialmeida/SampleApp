@@ -15,7 +15,7 @@ enum Section {
 
 final class TodayViewController: UIViewController {
 
-    let viewModel = TodayViewModel()
+    let viewModel = TodayViewModel(cacheKey: "todayCollection")
 
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -45,12 +45,33 @@ final class TodayViewController: UIViewController {
     }
 
     func bindViewModel() {
-        viewModel.updateUI = { old, new in
-            self.collectionView.reloadData()
-            self.collectionView.refreshControl?.endRefreshing()
-        }
+        viewModel.updateUI = { changes in
+            defer { self.collectionView.refreshControl?.endRefreshing() }
 
-//        let dataSource = UICollectionViewDiffableDataSource<Section, Collection>()
+            guard let changes = changes else {
+                self.collectionView.reloadData()
+                return
+            }
+
+            self.collectionView.performBatchUpdates({
+                changes.forEach { change in
+                    switch change {
+                    case let .delete(index):
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.collectionView.deleteItems(at: [indexPath])
+                    case let .insert(index):
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.collectionView.insertItems(at: [indexPath])
+                    case let .update(index):
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.collectionView.reloadItems(at: [indexPath])
+                    }
+                }
+            })
+
+            self.collectionView.refreshControl?.endRefreshing()
+
+        }
 
         viewModel.fetchData()
     }
@@ -88,7 +109,7 @@ extension TodayViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCollectionViewCell.identifier, for: indexPath) as! TodayCollectionViewCell
-        let collection = viewModel.dataSource[indexPath.row]
+        let collection = viewModel.object(at: indexPath.row)
         let photo = collection.coverPhoto
 
         cell.setContent(

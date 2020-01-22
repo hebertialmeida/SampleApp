@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct CollectionSectionModel: Codable, Equatable {
     public let collections: [Collection]
@@ -27,4 +28,21 @@ public func == (lhs: CollectionSectionModel, rhs: CollectionSectionModel) -> Boo
     guard lhs.date == rhs.date else { return false }
     guard lhs.id == rhs.id else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension CollectionSectionModel: Identifiable { }
+
+// MARK: - RocketData
+
+extension CollectionSectionModel: Model {
+    public func map(_ transform: (Model) -> Model?) -> CollectionSectionModel? {
+        let collections = self.collections.compactMap { transform($0) as? Collection }
+        return CollectionSectionModel(collections: collections, date: date, id: id)
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+        collections.forEach(visit)
+    }
 }

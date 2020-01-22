@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct Photo: Codable, Equatable {
     public let color: String
@@ -54,4 +55,25 @@ public func == (lhs: Photo, rhs: Photo) -> Bool {
     guard lhs.user == rhs.user else { return false }
     guard lhs.width == rhs.width else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension Photo: Identifiable { }
+
+// MARK: - RocketData
+
+extension Photo: Model {
+    public func map(_ transform: (Model) -> Model?) -> Photo? {
+        guard let links = transform(self.links) as? PhotoLinks else { return nil }
+        guard let urls = transform(self.urls) as? PhotoUrls else { return nil }
+        guard let user = transform(self.user) as? User else { return nil }
+        return Photo(color: color, createdAt: createdAt, description: description, height: height, id: id, likedByUser: likedByUser, likes: likes, links: links, updatedAt: updatedAt, urls: urls, user: user, width: width)
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+        visit(links)
+        visit(urls)
+        visit(user)
+    }
 }

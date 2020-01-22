@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RocketData
 
 public struct CollectionLinks: Codable, Equatable {
     public let download: URL?
@@ -30,4 +31,23 @@ public func == (lhs: CollectionLinks, rhs: CollectionLinks) -> Bool {
     guard lhs.photos == rhs.photos else { return false }
     guard lhs.related == rhs.related else { return false }
     return true
+}
+
+// MARK: - Identifiable
+
+extension CollectionLinks: Hashable, Identifiable {
+    public var id: Int {
+        self.hashValue
+    }
+}
+
+// MARK: - RocketData
+
+extension CollectionLinks: Model {
+    public func map(_ transform: (Model) -> Model?) -> CollectionLinks? {
+        return self
+    }
+
+    public func forEach(_ visit: (Model) -> Void) {
+    }
 }
