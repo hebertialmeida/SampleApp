@@ -25,9 +25,4 @@ final class TabBarController: UITabBarController {
         let today = TodayViewController()
         viewControllers = [today]
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }

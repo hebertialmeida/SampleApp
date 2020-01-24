@@ -7,12 +7,10 @@
 //
 
 import UIKit
-import SnapKit
 
 final class TodayHeaderView: UICollectionReusableView {
 
     static var identifier: String = "TodayHeaderView"
-
     private let dateLabel = UILabel()
     private let dayLabel = UILabel()
 
@@ -26,16 +24,16 @@ final class TodayHeaderView: UICollectionReusableView {
         dayLabel.numberOfLines = 1
         addSubview(dateLabel)
 
-        dateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview()
-        }
+        let space: CGFloat = 20
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        dateLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: space).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: space).isActive = true
 
-        dayLabel.snp.makeConstraints { make in
-            make.top.equalTo(dateLabel.snp.bottom).offset(3)
-            make.left.right.equalToSuperview()
-            make.bottom.greaterThanOrEqualToSuperview().priority(.low)
-        }
+        dayLabel.translatesAutoresizingMaskIntoConstraints = false
+        dayLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor).isActive = true
+        dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: space).isActive = true
+        dayLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: space).isActive = true
     }
 
     required init?(coder aDecoder: NSCoder) {

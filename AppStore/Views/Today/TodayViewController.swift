@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 enum Section {
   case collections
@@ -22,11 +21,14 @@ final class TodayViewController: UIViewController {
         layout.itemSize = CGSize(width: view.frame.width-40, height: 412)
         layout.minimumLineSpacing = 30
         layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 30, right: 20)
+        layout.headerReferenceSize = CGSize(width: 0, height: 50)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: TodayCollectionViewCell.identifier)
+        collectionView.register(TodayHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TodayHeaderView.identifier)
         return collectionView
     }()
 
@@ -61,6 +63,7 @@ final class TodayViewController: UIViewController {
                         self.collectionView.deleteItems(at: [indexPath])
                     case let .insert(index):
                         let indexPath = IndexPath(row: index, section: 0)
+                        debugPrint(indexPath)
                         self.collectionView.insertItems(at: [indexPath])
                     case let .update(index):
                         let indexPath = IndexPath(row: index, section: 0)
@@ -68,35 +71,20 @@ final class TodayViewController: UIViewController {
                     }
                 }
             })
-
-            self.collectionView.refreshControl?.endRefreshing()
-
         }
 
         viewModel.fetchData()
     }
 
     func setupViews() {
-        collectionView.backgroundColor = .white
         view.addSubview(collectionView)
 
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.left.equalTo(view.safeAreaLayoutGuide.snp.left)
-            make.right.equalTo(view.safeAreaLayoutGuide.snp.right)
-            make.bottom.equalTo(view.snp.bottom)
-        }
-
-        // Top Header
-        let topHeaderView = UIView(frame: .zero)
-        topHeaderView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
-        view.insertSubview(topHeaderView, aboveSubview: collectionView)
-
-        topHeaderView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview()
-            make.height.equalTo(view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
-        }
+        let margins = view.safeAreaLayoutGuide
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: margins.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: margins.rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
@@ -105,6 +93,10 @@ final class TodayViewController: UIViewController {
 extension TodayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItemsIn(section)
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        viewModel.dataProvider.data.isEmpty ? 0 : 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -127,21 +119,19 @@ extension TodayViewController: UICollectionViewDataSource {
 
 extension TodayViewController: UICollectionViewDelegate {
 
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodayHeaderView.identifier, for: indexPath) as! TodayHeaderView
-//
-//        let collection = viewModel.dataSource[indexPath.row]
-//        collection
-//        let date = dataSource.date
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "MMMM dd"
-//        let monthDay: String = dateFormatter.string(from: date)
-//        dateFormatter.dateFormat = "EEEE"
-//        let weekday: String = dateFormatter.string(from: date)
-//        header.setContent(date: monthDay.uppercased(), title: weekday)
-//        return header
-//    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodayHeaderView.identifier, for: indexPath) as! TodayHeaderView
 
+        let collection = viewModel.object(at: indexPath.row)
+        let date = collection.publishedAt
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd"
+        let monthDay: String = dateFormatter.string(from: date)
+        dateFormatter.dateFormat = "EEEE"
+        let weekday: String = dateFormatter.string(from: date)
+        header.setContent(date: monthDay.uppercased(), title: weekday)
+        return header
+    }
 }
 
 // MARK: UIScrollViewDelegate
